@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30711.63
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyEvernote.WebApp", "MyEvernote.WebApp\MyEvernote.WebApp.csproj", "{245E1022-9023-4BCD-9B0A-9D31E47B4B00}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{245E1022-9023-4BCD-9B0A-9D31E47B4B00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{245E1022-9023-4BCD-9B0A-9D31E47B4B00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{245E1022-9023-4BCD-9B0A-9D31E47B4B00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{245E1022-9023-4BCD-9B0A-9D31E47B4B00}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C71C5A65-F6AB-469F-9A7A-61DEE8743035}
+	EndGlobalSection
+EndGlobal
