@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace MyEvernote.Entities
 {
+    [Table("Notes")]
     public class Note:MyEntityBase
     {
+        [Required, StringLength(60)]
         public string Title { get; set; }
+        [Required, StringLength(2000)]
         public string Text { get; set; }
         public bool IsDraft { get; set; }
         public int LikeCount { get; set; }
