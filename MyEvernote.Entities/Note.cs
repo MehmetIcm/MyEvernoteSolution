@@ -21,5 +21,12 @@ namespace MyEvernote.Entities
         public virtual Category Category { get; set; }
         public virtual List<Comment> Comments { get; set; }
         public virtual List<Liked> Likes { get; set; }
+
+        //i don't want to take null exception When i want to add new comment or like
+        public Note()
+        {
+            Comments = new List<Comment>();
+            Likes = new List<Liked>();
+        }
     }
 }

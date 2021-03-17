@@ -9,7 +9,7 @@ namespace MyEvernote.Entities
     public class MyEntityBase
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string Id { get; set; }
+        public int Id { get; set; }
         [Required]
         public DateTime CreatedOn { get; set; }
         [Required]

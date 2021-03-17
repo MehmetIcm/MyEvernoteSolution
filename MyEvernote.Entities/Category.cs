@@ -14,5 +14,11 @@ namespace MyEvernote.Entities
         [StringLength(200)]
         public string Description { get; set; }
         public virtual List<Note> Notes { get; set; } //The property realtional with another class so we defined as virtual 
+
+        //i don't want to take null exception When i want to add new note
+        public Category()
+        {
+            Notes = new List<Note>();
+        }
     }
 }

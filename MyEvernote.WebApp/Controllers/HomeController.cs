@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyEvernote.BusinessLayer;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,6 +12,8 @@ namespace MyEvernote.WebApp.Controllers
         // GET: Home
         public ActionResult Index()
         {
+            Test test = new Test();
+            var lst = test;
             return View();
         }
     }
