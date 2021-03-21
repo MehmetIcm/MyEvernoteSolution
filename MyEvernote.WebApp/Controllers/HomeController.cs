@@ -13,7 +13,10 @@ namespace MyEvernote.WebApp.Controllers
         public ActionResult Index()
         {
             Test test = new Test();
-            var lst = test;
+            //test.InsertTest();
+            //test.UpdateTest();
+            //test.DeteleTest();
+            test.CommentTest();
             return View();
         }
     }
