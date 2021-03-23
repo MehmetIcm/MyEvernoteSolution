@@ -12,11 +12,11 @@ namespace MyEvernote.WebApp.Controllers
         // GET: Home
         public ActionResult Index()
         {
-            Test test = new Test();
+            //Test test = new Test();
             //test.InsertTest();
             //test.UpdateTest();
             //test.DeteleTest();
-            test.CommentTest();
+            //test.CommentTest();
             return View();
         }
     }
