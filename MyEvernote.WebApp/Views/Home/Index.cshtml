@@ -1,4 +1,6 @@
-﻿
+﻿@using MyEvernote.Entities
+@model List<Note>
+
 @{
     ViewBag.Title = "Index";
 }
@@ -25,13 +27,13 @@
                         </ol>
                         <div class="carousel-inner">
                             <div class="item active">
-                                <img class="slide-image" src="http://placehold.it/800x300" alt="">
+                                <img class="slide-image" src="https://via.placeholder.com/800x300.jpg" alt="">
                             </div>
                             <div class="item">
-                                <img class="slide-image" src="http://placehold.it/800x300" alt="">
+                                <img class="slide-image" src="https://via.placeholder.com/800x300.jpg" alt="">
                             </div>
                             <div class="item">
-                                <img class="slide-image" src="http://placehold.it/800x300" alt="">
+                                <img class="slide-image" src="https://via.placeholder.com/800x300.jpg" alt="">
                             </div>
                         </div>
                         <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
@@ -46,262 +48,50 @@
             </div>
             <!-- Yazılar -->
             <div class="row">
+                @foreach (var note in Model)
+                {
+                    <div class="col-sm-4 col-lg-4 col-md-4">
+                        <div class="thumbnail">
+                            @*<img src="~/Content/320x150exampleImage.jpg" alt="@note.Title" />*@
+                            <img src="https://via.placeholder.com/320x150.jpg" alt="@note.Title">
 
-                <div class="col-sm-4 col-lg-4 col-md-4">
-                    <div class="thumbnail">
-                        <img src="http://placehold.it/320x150" alt="">
-                        <div class="caption">
-                            <h4 class="pull-right"></h4>
-                            <h4>
-                                <a href="#">First Product</a>
-                            </h4>
-                            <p style="height:60px;overflow:hidden; margin-bottom:0px;">See more snippets like this online store item at See more snippets like this online store item at See more snippets like this online store item at.</p>
-                            <h6 class="pull-right">
-                                <span class="glyphicon glyphicon-user">mehmeticme</span><br />
-                                <span class="glyphicon glyphicon-time">01.01.2021 13:32</span><br />
-                            </h6>
-                        </div>
-                        <div class="myhrcss">
-                            <hr />
-                        </div>
-                        <div class="ratings">
-                            <p class="pull-right">
-                                <button class="btn btn-default btn-sm" type="button">
-                                    <span class="glyphicon glyphicon-comment"> Yorumlar</span>
-                                </button>
-                            </p>
-                            <p>
-                                <button class="btn btn-default btn-sm" type="button">
-                                    <span class="glyphicon glyphicon-star-empty"></span> 15
-                                </button>
-                            </p>
+                            <div class="caption">
+                                <h4 class="pull-right"></h4>
+                                <h4>
+                                    <a href="#">@note.Title</a>
+                                </h4>
+                                <h6 class="text-right">
+                                    <span class="glyphicon glyphicon-user">@note.Owner.Username</span><br />
+                                    <span class="glyphicon glyphicon-time">@note.ModifiedOn.ToString("dd.MM.yy HH.mm")</span><br />
+                                </h6>
+                                @if (string.IsNullOrEmpty(note.Text) == false && note.Text.Length > 80)
+                                {
+                                    <p> @(note.Text.Substring(0,80)+"...")</p>
+                                    <p class="pull-right"><a href="#" class="btn btn-default btn-sm">devamı <span class="glyphicon  glyphicon-chevron-right"></span></a></p>
+                                }
+                                else
+                                {
+                                    <p>@note.Text</p>
+                                }
+                            </div>
+                            <div class="myhrcss">
+                                <hr />
+                            </div>
+                            <div class="ratings">
+                                <p class="pull-right">
+                                    <button class="btn btn-default btn-sm" type="button">
+                                        <span class="glyphicon glyphicon-comment"> Yorumlar</span>
+                                    </button>
+                                </p>
+                                <p>
+                                    <button class="btn btn-default btn-sm" type="button">
+                                        <span class="glyphicon glyphicon-star-empty"></span>@note.LikeCount
+                                    </button>
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="col-sm-4 col-lg-4 col-md-4">
-                    <div class="thumbnail">
-                        <img src="http://placehold.it/320x150" alt="">
-                        <div class="caption">
-                            <h4 class="pull-right"></h4>
-                            <h4>
-                                <a href="#">First Product</a>
-                            </h4>
-                            <p style="height:60px;overflow:hidden; margin-bottom:0px;">See more snippets like this online store item at See more snippets like this online store item at See more snippets like this online store item at.</p>
-                            <h6 class="pull-right">
-                                <span class="glyphicon glyphicon-user">mehmeticme</span><br />
-                                <span class="glyphicon glyphicon-time">01.01.2021 13:32</span><br />
-                            </h6>
-                        </div>
-                        <div class="myhrcss">
-                            <hr />
-                        </div>
-                        <div class="ratings">
-                            <p class="pull-right">
-                                <button class="btn btn-default btn-sm" type="button">
-                                    <span class="glyphicon glyphicon-comment"> Yorumlar</span>
-                                </button>
-                            </p>
-                            <p>
-                                <button class="btn btn-default btn-sm" type="button">
-                                    <span class="glyphicon glyphicon-star-empty"></span> 15
-                                </button>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-4 col-lg-4 col-md-4">
-                    <div class="thumbnail">
-                        <img src="http://placehold.it/320x150" alt="">
-                        <div class="caption">
-                            <h4 class="pull-right"></h4>
-                            <h4>
-                                <a href="#">First Product</a>
-                            </h4>
-                            <p style="height:60px;overflow:hidden; margin-bottom:0px;">See more snippets like this online store item at See more snippets like this online store item at See more snippets like this online store item at.</p>
-                            <h6 class="pull-right">
-                                <span class="glyphicon glyphicon-user">mehmeticme</span><br />
-                                <span class="glyphicon glyphicon-time">01.01.2021 13:32</span><br />
-                            </h6>
-                        </div>
-                        <div class="myhrcss">
-                            <hr />
-                        </div>
-                        <div class="ratings">
-                            <p class="pull-right">
-                                <button class="btn btn-default btn-sm" type="button">
-                                    <span class="glyphicon glyphicon-comment"> Yorumlar</span>
-                                </button>
-                            </p>
-                            <p>
-                                <button class="btn btn-default btn-sm" type="button">
-                                    <span class="glyphicon glyphicon-star-empty"></span> 15
-                                </button>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-4 col-lg-4 col-md-4">
-                    <div class="thumbnail">
-                        <img src="http://placehold.it/320x150" alt="">
-                        <div class="caption">
-                            <h4 class="pull-right"></h4>
-                            <h4>
-                                <a href="#">First Product</a>
-                            </h4>
-                            <p style="height:60px;overflow:hidden; margin-bottom:0px;">See more snippets like this online store item at See more snippets like this online store item at See more snippets like this online store item at.</p>
-                            <h6 class="pull-right">
-                                <span class="glyphicon glyphicon-user">mehmeticme</span><br />
-                                <span class="glyphicon glyphicon-time">01.01.2021 13:32</span><br />
-                            </h6>
-                        </div>
-                        <div class="myhrcss">
-                            <hr />
-                        </div>
-                        <div class="ratings">
-                            <p class="pull-right">
-                                <button class="btn btn-default btn-sm" type="button">
-                                    <span class="glyphicon glyphicon-comment"> Yorumlar</span>
-                                </button>
-                            </p>
-                            <p>
-                                <button class="btn btn-default btn-sm" type="button">
-                                    <span class="glyphicon glyphicon-star-empty"></span> 15
-                                </button>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-4 col-lg-4 col-md-4">
-                    <div class="thumbnail">
-                        <img src="http://placehold.it/320x150" alt="">
-                        <div class="caption">
-                            <h4 class="pull-right"></h4>
-                            <h4>
-                                <a href="#">First Product</a>
-                            </h4>
-                            <p style="height:60px;overflow:hidden; margin-bottom:0px;">See more snippets like this online store item at See more snippets like this online store item at See more snippets like this online store item at.</p>
-                            <h6 class="pull-right">
-                                <span class="glyphicon glyphicon-user">mehmeticme</span><br />
-                                <span class="glyphicon glyphicon-time">01.01.2021 13:32</span><br />
-                            </h6>
-                        </div>
-                        <div class="myhrcss">
-                            <hr />
-                        </div>
-                        <div class="ratings">
-                            <p class="pull-right">
-                                <button class="btn btn-default btn-sm" type="button">
-                                    <span class="glyphicon glyphicon-comment"> Yorumlar</span>
-                                </button>
-                            </p>
-                            <p>
-                                <button class="btn btn-default btn-sm" type="button">
-                                    <span class="glyphicon glyphicon-star-empty"></span> 15
-                                </button>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-4 col-lg-4 col-md-4">
-                    <div class="thumbnail">
-                        <img src="http://placehold.it/320x150" alt="">
-                        <div class="caption">
-                            <h4 class="pull-right"></h4>
-                            <h4>
-                                <a href="#">First Product</a>
-                            </h4>
-                            <p style="height:60px;overflow:hidden; margin-bottom:0px;">See more snippets like this online store item at See more snippets like this online store item at See more snippets like this online store item at.</p>
-                            <h6 class="pull-right">
-                                <span class="glyphicon glyphicon-user">mehmeticme</span><br />
-                                <span class="glyphicon glyphicon-time">01.01.2021 13:32</span><br />
-                            </h6>
-                        </div>
-                        <div class="myhrcss">
-                            <hr />
-                        </div>
-                        <div class="ratings">
-                            <p class="pull-right">
-                                <button class="btn btn-default btn-sm" type="button">
-                                    <span class="glyphicon glyphicon-comment"> Yorumlar</span>
-                                </button>
-                            </p>
-                            <p>
-                                <button class="btn btn-default btn-sm" type="button">
-                                    <span class="glyphicon glyphicon-star-empty"></span> 15
-                                </button>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-4 col-lg-4 col-md-4">
-                    <div class="thumbnail">
-                        <img src="http://placehold.it/320x150" alt="">
-                        <div class="caption">
-                            <h4 class="pull-right"></h4>
-                            <h4>
-                                <a href="#">First Product</a>
-                            </h4>
-                            <p style="height:60px;overflow:hidden; margin-bottom:0px;">See more snippets like this online store item at See more snippets like this online store item at See more snippets like this online store item at.</p>
-                            <h6 class="pull-right">
-                                <span class="glyphicon glyphicon-user">mehmeticme</span><br />
-                                <span class="glyphicon glyphicon-time">01.01.2021 13:32</span><br />
-                            </h6>
-                        </div>
-                        <div class="myhrcss">
-                            <hr />
-                        </div>
-                        <div class="ratings">
-                            <p class="pull-right">
-                                <button class="btn btn-default btn-sm" type="button">
-                                    <span class="glyphicon glyphicon-comment"> Yorumlar</span>
-                                </button>
-                            </p>
-                            <p>
-                                <button class="btn btn-default btn-sm" type="button">
-                                    <span class="glyphicon glyphicon-star-empty"></span> 15
-                                </button>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-4 col-lg-4 col-md-4">
-                    <div class="thumbnail">
-                        <img src="http://placehold.it/320x150" alt="">
-                        <div class="caption">
-                            <h4 class="pull-right"></h4>
-                            <h4>
-                                <a href="#">First Product</a>
-                            </h4>
-                            <p style="height:60px;overflow:hidden; margin-bottom:0px;">See more snippets like this online store item at See more snippets like this online store item at See more snippets like this online store item at.</p>
-                            <h6 class="pull-right">
-                                <span class="glyphicon glyphicon-user">mehmeticme</span><br />
-                                <span class="glyphicon glyphicon-time">01.01.2021 13:32</span><br />
-                            </h6>
-                        </div>
-                        <div class="myhrcss">
-                            <hr />
-                        </div>
-                        <div class="ratings">
-                            <p class="pull-right">
-                                <button class="btn btn-default btn-sm" type="button">
-                                    <span class="glyphicon glyphicon-comment"> Yorumlar</span>
-                                </button>
-                            </p>
-                            <p>
-                                <button class="btn btn-default btn-sm" type="button">
-                                    <span class="glyphicon glyphicon-star-empty"></span> 15
-                                </button>
-                            </p>
-                        </div>
-                    </div>
-                </div>
+                }
 
             </div>
 

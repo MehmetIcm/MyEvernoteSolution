@@ -13,6 +13,6 @@
     <a href="@Url.Action("Index","Home")" class="list-group-item"><span class="glyphicon glyphicon-arrow-right"></span> Tümü</a>
     @foreach (var category in categoryList)
     {
-        <a href="/Category/Select/@category.Id" title="@category.Description" class="list-group-item"><span class="glyphicon glyphicon-arrow-right"></span>@category.Title</a>
+        <a href="/Home/ByCategory/@category.Id" title="@category.Description" class="list-group-item"><span class="glyphicon glyphicon-arrow-right"></span>@category.Title</a>
     }
 </div>
