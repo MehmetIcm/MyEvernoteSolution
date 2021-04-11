@@ -2,6 +2,7 @@
 using MyEvernote.Entities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace MyEvernote.BusinessLayer
@@ -13,6 +14,11 @@ namespace MyEvernote.BusinessLayer
         public List<Note> GetAllNotes()
         {
             return repo_note.List();
+        }
+        
+        public IQueryable<Note> GetAllNotesQueryable()
+        {
+            return repo_note.ListQueryable();
         }
     }
 }

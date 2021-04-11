@@ -27,7 +27,9 @@ namespace MyEvernote.WebApp.Controllers
             //}
 
             NoteManager noteManager = new NoteManager();
-            return View(noteManager.GetAllNotes());
+            return View(noteManager.GetAllNotes().OrderByDescending(x => x.ModifiedOn).ToList());      //Sorting on csharp
+            //return View(noteManager.GetAllNotesQueryable().OrderByDescending(x=>x.ModifiedOn).ToList());    
+            //Sorting on Sql Serverside (it's sending sorting queryable to sql)
         }
 
         public ActionResult ByCategory(int? id) // "?" question mark is for it can be null
@@ -43,7 +45,19 @@ namespace MyEvernote.WebApp.Controllers
                 return HttpNotFound();
                 //return RedirectToAction("Index", "Home");
             }
-            return View("Index", category.Notes);
+            return View("Index", category.Notes.OrderByDescending(x => x.ModifiedOn).ToList());
+        }
+
+        public ActionResult MostLiked()
+        {
+            NoteManager noteManager = new NoteManager();
+            return View("Index", noteManager.GetAllNotes().OrderByDescending(x => x.LikeCount).ToList());
+            //With "Index" statement we say to code, "Go to Index and carry to this model to view"
+        }
+
+        public ActionResult About()
+        {
+            return View();
         }
     }
 }
