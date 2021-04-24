@@ -34,14 +34,36 @@ namespace MyEvernote.DataAccessLayer.EntityFramework
         public int Insert(T obj)
         {
             _objectSet.Add(obj);
+
+            if (obj is MyEntityBase)
+            {
+                MyEntityBase o = obj as MyEntityBase;
+                DateTime now = DateTime.Now;
+                o.CreatedOn = now;
+                o.ModifiedOn = now;
+                o.ModifiedUsername = "system"; //TODO: the processing user name have to be written
+            }
+
             return Save();
         }
         public int Update(T obj)
         {
+            if (obj is MyEntityBase)
+            {
+                MyEntityBase o = obj as MyEntityBase;
+                o.ModifiedOn = DateTime.Now;
+                o.ModifiedUsername = "system"; //TODO: the processing user name have to be written
+            }
             return Save();
         }
         public int Delete(T obj)
         {
+            //if (obj is MyEntityBase)
+            //{
+            //    MyEntityBase o = obj as MyEntityBase;
+            //    o.ModifiedOn = DateTime.Now;
+            //    o.ModifiedUsername = "system"; //TODO: the processing user name have to be written
+            //}
             _objectSet.Remove(obj);
             return Save();
         }
