@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MyEvernote.Common\MyEvernote.Common.csproj" />
     <ProjectReference Include="..\MyEvernote.Entities\MyEvernote.Entities.csproj" />
   </ItemGroup>
 
