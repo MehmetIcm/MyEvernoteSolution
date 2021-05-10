@@ -121,5 +121,64 @@ namespace MyEvernote.BusinessLayer
             return res;
 
         }
+
+        public BusinessLayerResult<EvernoteUser> UpdateProfile(EvernoteUser data)
+        {
+            EvernoteUser user = repo_user.Find(x => x.Username == data.Username || x.Email == data.Email);
+            BusinessLayerResult<EvernoteUser> layerResult = new BusinessLayerResult<EvernoteUser>();
+
+            if (user != null && user.Id != data.Id)
+            {
+                if (user.Username == data.Username)
+                {
+                    layerResult.AddError(ErrorMessageCode.UserAlreadyExists, "Kullanıcı adı kayıtlı.");
+                }
+                if (user.Email == data.Email)
+                {
+                    layerResult.AddError(ErrorMessageCode.EmailAlreadyExists, "Email adresi ile daha önce kayıt olunmuş.");
+                }
+
+                return layerResult;
+            }
+            else
+            {
+                layerResult.Result = repo_user.Find(x => x.Id == data.Id);
+                layerResult.Result.Email = data.Email;
+                layerResult.Result.Name = data.Name;
+                layerResult.Result.Surname = data.Surname;
+                layerResult.Result.Password = data.Password;
+                layerResult.Result.Username = data.Username;
+
+                if (string.IsNullOrEmpty(data.ProfileImageFileName)==false)
+                {
+                    layerResult.Result.ProfileImageFileName = data.ProfileImageFileName;
+                }
+                if (repo_user.Update(layerResult.Result)==0)
+                {
+                    layerResult.AddError(ErrorMessageCode.ProfileCouldNotUpdated, "Profiliniz güncellenemedi.");
+                }
+            return layerResult;
+            }
+
+        }
+
+        public BusinessLayerResult<EvernoteUser> RemoveUserById(int id)
+        {
+            BusinessLayerResult<EvernoteUser> businessLayerResult = new BusinessLayerResult<EvernoteUser>();
+            EvernoteUser user = repo_user.Find(x => x.Id == id);
+            if (user!=null)
+            {
+                if (repo_user.Delete(user)==0)
+                {
+                    businessLayerResult.AddError(ErrorMessageCode.UserCouldNotRemove, "Kullanıcı silinemedi");
+                    return businessLayerResult;
+                }
+            }
+            else
+            {
+                businessLayerResult.AddError(ErrorMessageCode.UserCouldNotFound, "Kullanıcı bulunamadı");
+            }
+            return businessLayerResult;
+        }
     }
 }
