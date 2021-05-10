@@ -19,6 +19,8 @@ namespace MyEvernote.Entities
         public string Email { get; set; }
         [Required,StringLength(25)]
         public string Password { get; set; }
+        [StringLength(150)]
+        public string ProfileImageFileName { get; set; }
         public bool IsActive { get; set; }
         public bool IsAdmin { get; set; }
         public virtual List<Note> Notes { get; set; }

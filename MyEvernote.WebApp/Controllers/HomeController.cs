@@ -2,6 +2,7 @@
 using MyEvernote.Entities;
 using MyEvernote.Entities.Messages;
 using MyEvernote.Entities.ValueObjects;
+using MyEvernote.WebApp.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -62,8 +63,57 @@ namespace MyEvernote.WebApp.Controllers
             return View();
         }
 
+        public ActionResult ShowProfile()
+        {
+            EvernoteUser currentUser = Session["login"] as EvernoteUser;
+
+            EvernoteUserManager evernoteUserManager = new EvernoteUserManager();
+            BusinessLayerResult<EvernoteUser> res = evernoteUserManager.GetUserById(currentUser.Id);
+            if (res.Errors.Count > 0)
+            {
+                ErrorViewModel errorNotifyObj = new ErrorViewModel()
+                {
+                    Title = "Hata Oluştu",
+                    Items = res.Errors
+                };
+                TempData["errors"] = res.Errors;
+                return View("Error", errorNotifyObj);
+            }
+
+            return View(res.Result);
+
+        }
+        public ActionResult EditProfile()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult EditProfile(EvernoteUser user)
+        {
+            return View();
+        }
+        public ActionResult RemoveProfile()
+        {
+            return View();
+        }
+
+        //public ActionResult TestNotify()
+        //{
+        //    ErrorViewModel model = new ErrorViewModel()
+        //    {
+        //        Header = "Yönlendirme...",
+        //        Title = "Ok Test",
+        //        RedirectingTimeOut = 3000,
+        //        Items=new List<ErrorMessageObj>() { 
+        //            new ErrorMessageObj() { Message="Test Başarılı 1"},
+        //            new ErrorMessageObj() { Message="Test Başarılı 2"}, 
+        //        }
+        //    };
+        //    return View("Error", model);
+        //}
+
         public ActionResult Login()
-        {            
+        {
             return View();
         }
         [HttpPost]
@@ -75,12 +125,12 @@ namespace MyEvernote.WebApp.Controllers
                 BusinessLayerResult<EvernoteUser> businessLayerResult = evernoteUserManager.LoginUser(loginViewModel);
                 if (businessLayerResult.Errors.Count > 0)
                 {
-                    if (businessLayerResult.Errors.Find(x => x.Code == ErrorMessageCode.UserInNotActive)!=null)
+                    if (businessLayerResult.Errors.Find(x => x.Code == ErrorMessageCode.UserInNotActive) != null)
                     {
                         //ViewBag.SetLink = "E-Posta Gönder";
                         //ViewBag.SetLink = "http://Home/Activate/1234-4567-78980";
                     }
-                        
+
                     businessLayerResult.Errors.ForEach(x => ModelState.AddModelError("", x.Message));
 
                     return View(loginViewModel);
@@ -105,8 +155,8 @@ namespace MyEvernote.WebApp.Controllers
             if (ModelState.IsValid)
             {
                 EvernoteUserManager evernoteUserManager = new EvernoteUserManager();
-                BusinessLayerResult<EvernoteUser> businessLayerResult= evernoteUserManager.RegisterUser(registerViewModel);
-                if (businessLayerResult.Errors.Count>0)
+                BusinessLayerResult<EvernoteUser> businessLayerResult = evernoteUserManager.RegisterUser(registerViewModel);
+                if (businessLayerResult.Errors.Count > 0)
                 {
                     businessLayerResult.Errors.ForEach(x => ModelState.AddModelError("", x.Message));
                     return View(registerViewModel);
@@ -146,43 +196,41 @@ namespace MyEvernote.WebApp.Controllers
                 //{
                 //    return View(registerViewModel);
                 //}
-                return RedirectToAction("RegisterOk");
+                OkViewModel notfiyObj = new OkViewModel()
+                {
+                    Title = "Kayıt Başarılı",
+                    RedirectingUrl = "/Home/Login"
+                };
+                notfiyObj.Items.Add("Lütfen e-posta adresinize gönderilen aktivasyon linkine tıklayarak hesabınızı aktive ediniz.                       Hesabınızı aktive etmeden not ekleyemez ve beğenme yapamazsınız.");
+                return View("Ok",notfiyObj);
             }
 
             return View(registerViewModel); //If model isn't correct, return model to view and show data anotations
         }
 
-        public ActionResult RegisterOk()
-        {
-            return View();
-        }
         public ActionResult ActivateUser(Guid id)
         {
             EvernoteUserManager evernoteUserManager = new EvernoteUserManager();
-            BusinessLayerResult<EvernoteUser> res =  evernoteUserManager.ActivateUser(id);
+            BusinessLayerResult<EvernoteUser> res = evernoteUserManager.ActivateUser(id);
 
-            if (res.Errors.Count>0)
+            if (res.Errors.Count > 0)
             {
+                ErrorViewModel errorNotifyObj = new ErrorViewModel()
+                {
+                    Title="Geçersiz İşlem",
+                    Items=res.Errors
+                };
                 TempData["errors"] = res.Errors;
-                return RedirectToAction("ActivateUserCancel");
+                return View("Error", errorNotifyObj);
             }
-            return RedirectToAction("ActivateUserOk");
-        } 
-        
-        public ActionResult ActivateUserOk()
-        {
-            // User acvtivation will be done
-            return View();
-        }
-        public ActionResult ActivateUserCancel()
-        {
-            List<ErrorMessageObj> errors = null;
 
-            if (TempData["errors"]!=null)
+            OkViewModel okNotifyObj = new OkViewModel()
             {
-               errors = TempData["errors"] as List<ErrorMessageObj>;
-            }
-            return View(errors);
+                Title="Hesap Aktifleştirilme Başarılı",
+                RedirectingUrl="/Home/Login"
+            };
+            okNotifyObj.Items.Add("Hesap Aktifleştirildi. Artık not paylaşabilir ve beğenme yapabilirsiniz.");
+            return View("Ok",okNotifyObj);
         }
 
         public ActionResult Logout()

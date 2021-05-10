@@ -39,6 +39,7 @@ namespace MyEvernote.BusinessLayer
                     Username = registerViewModel.Username,
                     Email = registerViewModel.Email,
                     Password = registerViewModel.Password,
+                    ProfileImageFileName= "profile_picture.png",
                     ActivateGuid= Guid.NewGuid(),
                     IsActive = false,
                     IsAdmin = false,
@@ -83,6 +84,17 @@ namespace MyEvernote.BusinessLayer
             }
 
             return layerResult;
+        }
+
+        public BusinessLayerResult<EvernoteUser> GetUserById(int id)
+        {
+            BusinessLayerResult<EvernoteUser> res = new BusinessLayerResult<EvernoteUser>();
+            res.Result = repo_user.Find(x => x.Id == id);
+            if (res.Result==null)
+            {
+                res.AddError(ErrorMessageCode.UserNotFound, "Kullanıcı Bulunamadı.");
+            }
+            return res;
         }
 
         public BusinessLayerResult<EvernoteUser> ActivateUser(Guid activateId)
