@@ -98,52 +98,9 @@
     </nav>
 
     @RenderBody()
-    <!-- /.container -->
 
-    <div class="container">
+    @RenderSection("footer",required:false)
 
-        <hr>
-
-        <!-- Footer -->
-        <footer>
-            <div class="row">
-                <div class="col-lg-4 text-center">
-                    <h5>
-                        <strong>Site Haritası</strong>
-                    </h5>
-                    <hr />
-                    <p>
-                        <a href="/Home/About"><span class="glyphicon glyphicon-info-sign"></span> Hakkımızda</a><br />
-                        <a href="/Home/MostLiked"><span class="glyphicon glyphicon-star"></span> En Beğenilenler</a><br />
-                        <a href="/Home/Index"><span class="glyphicon glyphicon-th-list"></span> Son Yazılar</a>
-                    </p>
-                </div>
-                <div class="col-lg-4 text-center">
-                    <p>Tüm hakları saklıdır &copy; <strong>MyEvernote</strong> @DateTime.Now.Year</p>
-                    <hr />
-                </div>
-                <div class="col-lg-4 text-center">
-                    <h5>
-                        <strong>E-Bülten Üyeliği</strong>
-                    </h5>
-                    <hr />
-                    <div class="col-md-10 col-md-offset-1">
-                        <p>
-                            Daha güncel bilgiler almak için lütfen abone olun
-                        </p>
-                        <div class="input-group">
-                            <input type="text" placeholder="e-posta adresiniz" class="form-control" />
-                            <span class="input-group-btn">
-                                <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-send"></span> Gönder</button>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
-
-    </div>
-    <!-- /.container -->
 </body>
 
 </html>
