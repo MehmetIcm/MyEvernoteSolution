@@ -105,33 +105,41 @@ namespace MyEvernote.WebApp.Controllers
         [HttpPost]
         public ActionResult EditProfile(EvernoteUser user, HttpPostedFileBase ProfileImage)
         {
-            if (ProfileImage!=null &&
-                (ProfileImage.ContentType=="image/jpeg" ||
-                ProfileImage.ContentType=="image/jpg" ||
-                ProfileImage.ContentType=="image/png")
+            ModelState.Remove("ModifiedUsername");  //Don't check ModifiedUsername because we're sending data default
+
+            if (ModelState.IsValid)
+            {
+                if (ProfileImage != null &&
+                (ProfileImage.ContentType == "image/jpeg" ||
+                ProfileImage.ContentType == "image/jpg" ||
+                ProfileImage.ContentType == "image/png")
                 )
-            {
-                string filename = $"user_{user.Id}.{ProfileImage.ContentType.Split('/')[1]}";
-                ProfileImage.SaveAs(Server.MapPath($"~/images/{filename}"));
-                user.ProfileImageFileName = filename;
-            }
-
-            EvernoteUserManager evernoteUserManager = new EvernoteUserManager();
-            BusinessLayerResult<EvernoteUser> res = evernoteUserManager.UpdateProfile(user);
-            if (res.Errors.Count > 0)
-            {
-                ErrorViewModel errorNotifyObj = new ErrorViewModel()
                 {
-                    Items = res.Errors,
-                    Title = "Profil Güncellenemedi",
-                    RedirectingUrl="/Home/EditProfile"
-                };
+                    string filename = $"user_{user.Id}.{ProfileImage.ContentType.Split('/')[1]}";
+                    ProfileImage.SaveAs(Server.MapPath($"~/images/{filename}"));
+                    user.ProfileImageFileName = filename;
+                }
 
-                return View("Error", errorNotifyObj);
+                EvernoteUserManager evernoteUserManager = new EvernoteUserManager();
+                BusinessLayerResult<EvernoteUser> res = evernoteUserManager.UpdateProfile(user);
+                if (res.Errors.Count > 0)
+                {
+                    ErrorViewModel errorNotifyObj = new ErrorViewModel()
+                    {
+                        Items = res.Errors,
+                        Title = "Profil Güncellenemedi",
+                        RedirectingUrl = "/Home/EditProfile"
+                    };
+
+                    return View("Error", errorNotifyObj);
+                }
+
+                Session["login"] = res.Result; //The session has been updated as the profile has been updated
+                return RedirectToAction("ShowProfile");
             }
 
-            Session["login"] = res.Result; //The session has been updated as the profile has been updated
-            return RedirectToAction("ShowProfile");
+            return View(user);
+
         }
         public ActionResult RemoveProfile()
         {
@@ -139,7 +147,7 @@ namespace MyEvernote.WebApp.Controllers
 
             EvernoteUserManager evernoteUserManager = new EvernoteUserManager();
             BusinessLayerResult<EvernoteUser> businessLayerResult = evernoteUserManager.RemoveUserById(currentUser.Id);
-            if (businessLayerResult.Errors.Count>0)
+            if (businessLayerResult.Errors.Count > 0)
             {
                 ErrorViewModel errorNotifyObj = new ErrorViewModel()
                 {

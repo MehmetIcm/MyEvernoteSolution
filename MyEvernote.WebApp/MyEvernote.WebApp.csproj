@@ -108,6 +108,7 @@
     <Content Include="Content\shop-homepage.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\bootstrap.min3.3.7.css" />
+    <Content Include="Content\validation-summary.css" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="Images\profile_picture.png" />
     <Content Include="Scripts\bootstrap3.3.7.min.js" />
