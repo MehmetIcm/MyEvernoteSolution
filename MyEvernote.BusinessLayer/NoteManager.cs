@@ -1,4 +1,5 @@
-﻿using MyEvernote.DataAccessLayer.EntityFramework;
+﻿using MyEvernote.BusinessLayer.Abstract;
+using MyEvernote.DataAccessLayer.EntityFramework;
 using MyEvernote.Entities;
 using System;
 using System.Collections.Generic;
@@ -7,18 +8,8 @@ using System.Text;
 
 namespace MyEvernote.BusinessLayer
 {
-    public class NoteManager
+    public class NoteManager:ManagerBase<Note>
     {
-        private Repository<Note> repo_note = new Repository<Note>();
 
-        public List<Note> GetAllNotes()
-        {
-            return repo_note.List();
-        }
-        
-        public IQueryable<Note> GetAllNotesQueryable()
-        {
-            return repo_note.ListQueryable();
-        }
     }
 }

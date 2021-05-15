@@ -293,6 +293,10 @@
       <Project>{3ebf4bb3-acfc-4bc7-b5f0-d14b00e1de97}</Project>
       <Name>MyEvernote.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MyEvernote.Core\MyEvernote.Core.csproj">
+      <Project>{b9c5af47-9a68-4202-b6f2-7251e82c96b1}</Project>
+      <Name>MyEvernote.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MyEvernote.Entities\MyEvernote.Entities.csproj">
       <Project>{7d83a4e6-5e22-493a-8cf5-23c9a203bc47}</Project>
       <Name>MyEvernote.Entities</Name>

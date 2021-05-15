@@ -4,9 +4,9 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace MyEvernote.DataAccessLayer.Abstract
+namespace MyEvernote.Core.DataAccess
 {
-    public interface IRepository<T>
+    public interface IDataAccess<T>
     {
         List<T> List();
         IQueryable<T> ListQueryable();

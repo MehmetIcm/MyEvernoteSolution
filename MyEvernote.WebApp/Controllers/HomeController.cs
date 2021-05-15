@@ -1,4 +1,5 @@
 ﻿using MyEvernote.BusinessLayer;
+using MyEvernote.BusinessLayer.Results;
 using MyEvernote.Entities;
 using MyEvernote.Entities.Messages;
 using MyEvernote.Entities.ValueObjects;
@@ -14,6 +15,10 @@ namespace MyEvernote.WebApp.Controllers
 {
     public class HomeController : Controller
     {
+        private NoteManager noteManager = new NoteManager();
+        private CategoryManager categoryManager = new CategoryManager();
+        private EvernoteUserManager evernoteUserManager = new EvernoteUserManager();
+
         // GET: Home
         public ActionResult Index()
         {
@@ -29,20 +34,17 @@ namespace MyEvernote.WebApp.Controllers
             //    return View(TempData["categoryNotes"] as List<Note>);
             //}
 
-            NoteManager noteManager = new NoteManager();
-            return View(noteManager.GetAllNotes().OrderByDescending(x => x.ModifiedOn).ToList());      //Sorting on csharp
+            return View(noteManager.ListQueryable().OrderByDescending(x => x.ModifiedOn).ToList());      //Sorting on csharp
             //return View(noteManager.GetAllNotesQueryable().OrderByDescending(x=>x.ModifiedOn).ToList());    
             //Sorting on Sql Serverside (it's sending sorting queryable to sql)
         }
-
         public ActionResult ByCategory(int? id) // "?" question mark is for it can be null
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CategoryManager categoryManager = new CategoryManager();
-            Category category = categoryManager.GetCategoryById(id.Value);
+            Category category = categoryManager.Find(x=>x.Id == id.Value);
             if (category == null)
             {
                 return HttpNotFound();
@@ -50,24 +52,19 @@ namespace MyEvernote.WebApp.Controllers
             }
             return View("Index", category.Notes.OrderByDescending(x => x.ModifiedOn).ToList());
         }
-
         public ActionResult MostLiked()
         {
-            NoteManager noteManager = new NoteManager();
-            return View("Index", noteManager.GetAllNotes().OrderByDescending(x => x.LikeCount).ToList());
+            return View("Index", noteManager.ListQueryable().OrderByDescending(x => x.LikeCount).ToList());
             //With "Index" statement we say to code, "Go to Index and carry to this model to view"
         }  //We don't have to creating a new view for same kind of pages just we choose the view and send the model which order by another component
-
         public ActionResult About()
         {
             return View();
         }
-
         public ActionResult ShowProfile()
         {
             EvernoteUser currentUser = Session["login"] as EvernoteUser;
 
-            EvernoteUserManager evernoteUserManager = new EvernoteUserManager();
             BusinessLayerResult<EvernoteUser> res = evernoteUserManager.GetUserById(currentUser.Id);
             if (res.Errors.Count > 0)
             {
@@ -120,7 +117,6 @@ namespace MyEvernote.WebApp.Controllers
                     user.ProfileImageFileName = filename;
                 }
 
-                EvernoteUserManager evernoteUserManager = new EvernoteUserManager();
                 BusinessLayerResult<EvernoteUser> res = evernoteUserManager.UpdateProfile(user);
                 if (res.Errors.Count > 0)
                 {
@@ -145,7 +141,6 @@ namespace MyEvernote.WebApp.Controllers
         {
             EvernoteUser currentUser = Session["login"] as EvernoteUser;
 
-            EvernoteUserManager evernoteUserManager = new EvernoteUserManager();
             BusinessLayerResult<EvernoteUser> businessLayerResult = evernoteUserManager.RemoveUserById(currentUser.Id);
             if (businessLayerResult.Errors.Count > 0)
             {
@@ -176,7 +171,6 @@ namespace MyEvernote.WebApp.Controllers
         //    };
         //    return View("Error", model);
         //}
-
         public ActionResult Login()
         {
             return View();
@@ -186,7 +180,6 @@ namespace MyEvernote.WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                EvernoteUserManager evernoteUserManager = new EvernoteUserManager();
                 BusinessLayerResult<EvernoteUser> businessLayerResult = evernoteUserManager.LoginUser(loginViewModel);
                 if (businessLayerResult.Errors.Count > 0)
                 {
@@ -219,7 +212,6 @@ namespace MyEvernote.WebApp.Controllers
 
             if (ModelState.IsValid)
             {
-                EvernoteUserManager evernoteUserManager = new EvernoteUserManager();
                 BusinessLayerResult<EvernoteUser> businessLayerResult = evernoteUserManager.RegisterUser(registerViewModel);
                 if (businessLayerResult.Errors.Count > 0)
                 {
@@ -272,10 +264,8 @@ namespace MyEvernote.WebApp.Controllers
 
             return View(registerViewModel); //If model isn't correct, return model to view and show data anotations
         }
-
         public ActionResult ActivateUser(Guid id)
         {
-            EvernoteUserManager evernoteUserManager = new EvernoteUserManager();
             BusinessLayerResult<EvernoteUser> res = evernoteUserManager.ActivateUser(id);
 
             if (res.Errors.Count > 0)
@@ -297,13 +287,10 @@ namespace MyEvernote.WebApp.Controllers
             okNotifyObj.Items.Add("Hesap Aktifleştirildi. Artık not paylaşabilir ve beğenme yapabilirsiniz.");
             return View("Ok", okNotifyObj);
         }
-
         public ActionResult Logout()
         {
             Session.Clear();
             return RedirectToAction("Index");
         }
-
-
     }
 }

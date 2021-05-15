@@ -14,7 +14,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MyEvernote.Common\MyEvernote.Common.csproj" />
+    <ProjectReference Include="..\MyEvernote.Core\MyEvernote.Core.csproj" />
     <ProjectReference Include="..\MyEvernote.Entities\MyEvernote.Entities.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Abstract\" />
   </ItemGroup>
 
 </Project>
