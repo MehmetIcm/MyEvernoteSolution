@@ -37,3 +37,7 @@ namespace MyEvernote.BusinessLayer
         }
     }
 }
+
+//II. Method: Deleting Relational Datas on Database
+//Sql Server>Db>New Diagram>Realitons (everyone)>Properties>INSERT and UPDATE Specification>Delete Rule : Cascade
+//If we can't save changes the diagram on the sqlserver> Tools>Options>Designers>Prevent saving changes that require table re-creation > remove the check
