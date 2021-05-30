@@ -8,6 +8,7 @@ using System.Text;
 namespace MyEvernote.BusinessLayer
 {
     //Deleting Relational Datas
+
     public class CategoryManager:ManagerBase<Category>
     {
         public override int Delete(Category category)
@@ -36,6 +37,7 @@ namespace MyEvernote.BusinessLayer
             return base.Delete(category);
         }
     }
+
 }
 
 //II. Method: Deleting Relational Datas on Database

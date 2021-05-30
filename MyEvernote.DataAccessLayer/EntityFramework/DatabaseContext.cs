@@ -20,5 +20,19 @@ namespace MyEvernote.DataAccessLayer.EntityFramework
             Database.SetInitializer(new MyInitializer());
         }
 
+        //Creating Articulate Relational Datas
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            //FluentAPI
+            modelBuilder.Entity<Note>()
+                .HasMany(n => n.Comments) //Note Entity has many relational with comments 
+                .WithRequired(c => c.Note) //a Comment has to be with Note
+                .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<Note>()
+                .HasMany(n => n.Likes) 
+                .WithRequired(l => l.Note)
+                .WillCascadeOnDelete(true);
+        }
     }
 }
