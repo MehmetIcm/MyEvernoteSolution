@@ -35,7 +35,7 @@ namespace MyEvernote.BusinessLayer
             }
             else
             {
-                int dbResult = Insert(new EvernoteUser()
+                int dbResult = base.Insert(new EvernoteUser()
                 {
                     Username = registerViewModel.Username,
                     Email = registerViewModel.Email,
@@ -154,7 +154,7 @@ namespace MyEvernote.BusinessLayer
                 {
                     layerResult.Result.ProfileImageFileName = data.ProfileImageFileName;
                 }
-                if (Update(layerResult.Result)==0)
+                if (base.Update(layerResult.Result)==0)
                 {
                     layerResult.AddError(ErrorMessageCode.ProfileCouldNotUpdated, "Profiliniz güncellenemedi.");
                 }
@@ -180,6 +180,79 @@ namespace MyEvernote.BusinessLayer
                 businessLayerResult.AddError(ErrorMessageCode.UserCouldNotFound, "Kullanıcı bulunamadı");
             }
             return businessLayerResult;
+        }
+
+        //Method Hiding..
+        public new BusinessLayerResult<EvernoteUser> Insert(EvernoteUser data)   //new : method hiding. it's using for like override but aslo we can change return type with new
+        {           
+            EvernoteUser user = Find(x => x.Username == data.Username || x.Email == data.Email);
+            BusinessLayerResult<EvernoteUser> layerResult = new BusinessLayerResult<EvernoteUser>();
+
+            layerResult.Result = data;
+
+            if (user != null)
+            {
+                if (user.Username == data.Username)
+                {
+                    layerResult.AddError(ErrorMessageCode.UserAlreadyExists, "Kullanıcı adı kayıtlı.");
+                }
+                if (user.Email == data.Email)
+                {
+                    layerResult.AddError(ErrorMessageCode.EmailAlreadyExists, "Email adresi ile daha önce kayıt olunmuş.");
+                }
+            }
+            else
+            {
+                layerResult.Result.ProfileImageFileName = "profile_picture.png";
+                layerResult.Result.ActivateGuid = Guid.NewGuid();
+
+
+                if (base.Insert(layerResult.Result) == 0) 
+                {
+                    layerResult.AddError(ErrorMessageCode.UserCouldNotInserted, "Kullanıcı eklenemedi.");
+                }           
+            }
+
+            return layerResult;
+
+        }
+
+        public new BusinessLayerResult<EvernoteUser> Update(EvernoteUser data)
+        {
+            EvernoteUser user = Find(x => x.Username == data.Username || x.Email == data.Email);
+            BusinessLayerResult<EvernoteUser> layerResult = new BusinessLayerResult<EvernoteUser>();
+            layerResult.Result = data;
+
+            if (user != null && user.Id != data.Id)
+            {
+                if (user.Username == data.Username)
+                {
+                    layerResult.AddError(ErrorMessageCode.UserAlreadyExists, "Kullanıcı adı kayıtlı.");
+                }
+                if (user.Email == data.Email)
+                {
+                    layerResult.AddError(ErrorMessageCode.EmailAlreadyExists, "Email adresi ile daha önce kayıt olunmuş.");
+                }
+
+                return layerResult;
+            }
+            else
+            {
+                layerResult.Result = Find(x => x.Id == data.Id);
+                layerResult.Result.Email = data.Email;
+                layerResult.Result.Name = data.Name;
+                layerResult.Result.Surname = data.Surname;
+                layerResult.Result.Password = data.Password;
+                layerResult.Result.Username = data.Username;
+                layerResult.Result.IsActive = data.IsActive;
+                layerResult.Result.IsAdmin = data.IsAdmin;
+
+                if (base.Update(layerResult.Result) == 0)
+                {
+                    layerResult.AddError(ErrorMessageCode.UserCouldNotUpdated, "Kullanıcı güncellenemedi.");
+                }
+                return layerResult;
+            }
         }
     }
 }

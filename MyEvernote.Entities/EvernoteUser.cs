@@ -28,12 +28,14 @@ namespace MyEvernote.Entities
             Required(ErrorMessage = "{0} alan gereklidir."), 
             StringLength(25, ErrorMessage = "{0} alanı maksimum {1} karakter olmalıdır")]
         public string Password { get; set; }
-        [StringLength(150)]
+        [StringLength(150), ScaffoldColumn(false)]  //ScaffoldColumn attribute is usign for ignore this column while scaffolding
         public string ProfileImageFileName { get; set; }
+        [DisplayName("Is Active")]
         public bool IsActive { get; set; }
+        [DisplayName("Is Admin")]
         public bool IsAdmin { get; set; }
         public virtual List<Note> Notes { get; set; }
-        [Required]
+        [Required, ScaffoldColumn(false)]
         public Guid ActivateGuid { get; set; } //for email activating link 
         public virtual List<Comment> Comments { get; set; }
         public virtual List<Liked> Likes { get; set; }
