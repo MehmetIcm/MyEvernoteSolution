@@ -10,7 +10,7 @@ namespace MyEvernote.Entities
     [Table("Categories")]
     public class Category:MyEntityBase
     {
-        [DisplayName("Başlık"),Required, StringLength(50)]
+        [DisplayName("Kategori"),Required, StringLength(50)]
         public string Title { get; set; }
         [DisplayName("Açıklama"), StringLength(200)]
         public string Description { get; set; }
