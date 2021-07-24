@@ -3,6 +3,7 @@ using MyEvernote.BusinessLayer.Results;
 using MyEvernote.Entities;
 using MyEvernote.Entities.Messages;
 using MyEvernote.Entities.ValueObjects;
+using MyEvernote.WebApp.Models;
 using MyEvernote.WebApp.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -63,9 +64,8 @@ namespace MyEvernote.WebApp.Controllers
         }
         public ActionResult ShowProfile()
         {
-            EvernoteUser currentUser = Session["login"] as EvernoteUser;
 
-            BusinessLayerResult<EvernoteUser> res = evernoteUserManager.GetUserById(currentUser.Id);
+            BusinessLayerResult<EvernoteUser> res = evernoteUserManager.GetUserById(CurrentSession.User.Id);
             if (res.Errors.Count > 0)
             {
                 ErrorViewModel errorNotifyObj = new ErrorViewModel()
@@ -82,10 +82,9 @@ namespace MyEvernote.WebApp.Controllers
         }
         public ActionResult EditProfile()
         {
-            EvernoteUser currentUser = Session["login"] as EvernoteUser;
 
             EvernoteUserManager evernoteUserManager = new EvernoteUserManager();
-            BusinessLayerResult<EvernoteUser> res = evernoteUserManager.GetUserById(currentUser.Id);
+            BusinessLayerResult<EvernoteUser> res = evernoteUserManager.GetUserById(CurrentSession.User.Id);
             if (res.Errors.Count > 0)
             {
                 ErrorViewModel errorNotifyObj = new ErrorViewModel()
@@ -130,7 +129,7 @@ namespace MyEvernote.WebApp.Controllers
                     return View("Error", errorNotifyObj);
                 }
 
-                Session["login"] = res.Result; //The session has been updated as the profile has been updated
+                CurrentSession.Set<EvernoteUser>("login", res.Result); //The session has been updated as the profile has been updated
                 return RedirectToAction("ShowProfile");
             }
 
@@ -139,9 +138,8 @@ namespace MyEvernote.WebApp.Controllers
         }
         public ActionResult RemoveProfile()
         {
-            EvernoteUser currentUser = Session["login"] as EvernoteUser;
 
-            BusinessLayerResult<EvernoteUser> businessLayerResult = evernoteUserManager.RemoveUserById(currentUser.Id);
+            BusinessLayerResult<EvernoteUser> businessLayerResult = evernoteUserManager.RemoveUserById(CurrentSession.User.Id);
             if (businessLayerResult.Errors.Count > 0)
             {
                 ErrorViewModel errorNotifyObj = new ErrorViewModel()
@@ -196,7 +194,7 @@ namespace MyEvernote.WebApp.Controllers
 
                 // Login control and redirecting
                 // Add user datas to session and keep data on session
-                Session["login"] = businessLayerResult.Result;
+                CurrentSession.Set<EvernoteUser>("login", businessLayerResult.Result);
                 return RedirectToAction("Index");
             }
 
